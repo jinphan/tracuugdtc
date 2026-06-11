@@ -60,7 +60,7 @@
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Ngày sinh:</span>
-                        <span id="nsinh" class="col-span-2 text-gray-900 truncate">--</span>
+                        <span id="nsinh" class="col-span-2 text-gray-900 truncate font-semibold text-blue-800">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Lớp sinh hoạt:</span>
@@ -136,10 +136,10 @@
 
     <script>
         // ==========================================
-        // CẤU HÌNH ID FILE GOOGLE SHEETS CỦA BẠN TẠI ĐÂY
+        // CẤU HÌNH LIÊN KẾT ĐÁM MÂY GOOGLE SHEETS
         // ==========================================
         const SPREADSHEET_ID = '1kBKA41Ijj-9VpGbVG_sUWsO1kSGeW7sD1ruY397K3BU';
-        const SHEET_NAME = 'GDTC'; // Tên tab chứa dữ liệu
+        const SHEET_NAME = 'GDTC'; 
         // ==========================================
 
         const studentIdInput = document.getElementById("studentIdInput");
@@ -160,55 +160,81 @@
         const g4_so = document.getElementById("g4_so"); const g4_chu = document.getElementById("g4_chu");
         const tbinh = document.getElementById("tbinh");   const xeploai = document.getElementById("xeploai");
 
+        // Hàm đọc an toàn mọi kiểu dữ liệu dữ liệu từ Google
+        function getVal(cell) {
+            if (!cell) return "--";
+            return cell.f !== undefined ? cell.f : (cell.v !== undefined ? cell.v : "--");
+        }
+
+        // Hàm ép định dạng Ngày sinh hiển thị bắt buộc dạng dd/mm/yyyy
+        function formatDate(cell) {
+            if (!cell || cell.v === undefined) return "--";
+            let valStr = String(cell.v);
+
+            // Trường hợp 1: Nếu Google Sheet trả về đối tượng dạng Date gốc: "Date(2003,0,15)"
+            if (valStr.includes("Date(")) {
+                let matches = valStr.match(/\d+/g);
+                if (matches && matches.length >= 3) {
+                    let y = matches[0];
+                    let m = String(Number(matches[1]) + 1).padStart(2, '0'); // Tháng trong JS chạy từ 0-11 nên phải +1
+                    let d = String(matches[2]).padStart(2, '0');
+                    return `${d}/${m}/${y}`;
+                }
+            }
+
+            // Trường hợp 2: Nếu là chuỗi dạng Timestamp / Số Unix hoặc chuỗi định dạng khác
+            if (cell.f) return cell.f; // Ưu tiên chuỗi hiển thị thô trên Sheet nếu nó tồn tại
+
+            return valStr;
+        }
+
         async function executeSearch() {
             const query = studentIdInput.value.trim().toUpperCase();
-            studentIdInput.value = ""; // Xóa sạch ô nhập liệu luôn
+            studentIdInput.value = ""; 
 
             if (query === "") { switchState('default'); return; }
 
             switchState('loading');
 
-            // Câu lệnh SQL gửi đến Google Sheet để lọc đúng mã SV ở Cột B (tương ứng cột B trong Sheet)
-            // Giả định cột B trong Google Sheet chứa Mã Sinh Viên
-            const sqlQuery = encodeURIComponent(`SELECT * WHERE B = '${query}'`);
+            // Câu lệnh SQL lọc song song định dạng Text và Number của mã SV tại Cột B
+            const sqlQuery = encodeURIComponent(`SELECT * WHERE B = '${query}' OR B = ${isNaN(query) ? -1 : query}`);
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}&tq=${sqlQuery}`;
 
             try {
                 const response = await fetch(url);
                 const text = await response.text();
                 
-                // Chuẩn hóa dữ liệu trả về từ cấu hình bảo mật của Google
                 const jsonString = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
                 const data = JSON.parse(jsonString);
 
                 if (data.table.rows.length > 0) {
-                    // Lấy dòng đầu tiên tìm được
                     const cols = data.table.rows[0].c;
                     
-                    // Bản đồ map dữ liệu theo thứ tự các cột A(0), B(1), C(2),...
-                    masv.textContent = cols[1] ? cols[1].v : "--"; // Cột B: Mã SV
+                    masv.textContent = getVal(cols[1]); 
                     
-                    const ho = cols[2] ? cols[2].v : ""; // Cột C: Họ đệm
-                    const ten = cols[3] ? cols[3].v : ""; // Cột D: Tên
+                    const ho = cols[2] ? (cols[2].v || "") : ""; 
+                    const ten = cols[3] ? (cols[3].v || "") : ""; 
                     hoten.textContent = (ho + " " + ten).trim() || "--";
 
-                    nsinh.textContent = cols[4] ? cols[4].v : "--";      // Cột E: Ngày sinh
-                    lopsh.textContent = cols[5] ? cols[5].v : "--";    // Cột F: Lớp SH
-                    khoa.textContent = cols[6] ? Math.floor(cols[6].v) : "--";  // Cột G: Khóa
+                    // Áp dụng định dạng hiển thị dd/mm/yyyy mới cho ô Ngày sinh (Cột E - index 4)
+                    nsinh.textContent = formatDate(cols[4]);
+
+                    lopsh.textContent = getVal(cols[5]);
+                    khoa.textContent = getVal(cols[6]);
                     
-                    g1_so.textContent = cols[7] ? cols[7].v : "--";      // Cột H: GDTC1 số
-                    g1_chu.textContent = cols[8] ? cols[8].v : "--";      // Cột I: GDTC1 chữ
-                    g2_so.textContent = cols[9] ? cols[9].v : "--";      // Cột J
-                    g2_chu.textContent = cols[10] ? cols[10].v : "--";    // Cột K
-                    g3_so.textContent = cols[11] ? cols[11].v : "--";    // Cột L
-                    g3_chu.textContent = cols[12] ? cols[12].v : "--";    // Cột M
-                    g4_so.textContent = cols[13] ? cols[13].v : "--";    // Cột N
-                    g4_chu.textContent = cols[14] ? cols[14].v : "--";    // Cột O
+                    g1_so.textContent = getVal(cols[7]);
+                    g1_chu.textContent = getVal(cols[8]);
+                    g2_so.textContent = getVal(cols[9]);
+                    g2_chu.textContent = getVal(cols[10]);
+                    g3_so.textContent = getVal(cols[11]);
+                    g3_chu.textContent = getVal(cols[12]);
+                    g4_so.textContent = getVal(cols[13]);
+                    g4_chu.textContent = getVal(cols[14]);
                     
-                    tbinh.textContent = cols[15] ? cols[15].v : "--";     // Cột P: TB chung
-                    xeploai.textContent = cols[16] ? cols[16].v : "--";    // Cột Q: Xếp loại
-                    qdinh.textContent = cols[17] ? cols[17].v : "--"; // Cột R: Số/Ngày QĐ
-                    truong.textContent = cols[18] ? cols[18].v : "--";   // Cột S: Trường
+                    tbinh.textContent = getVal(cols[15]);
+                    xeploai.textContent = getVal(cols[16]);
+                    qdinh.textContent = getVal(cols[17]);
+                    truong.textContent = getVal(cols[18]);
 
                     switchState('profile');
                 } else {

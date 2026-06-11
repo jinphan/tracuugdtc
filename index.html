@@ -171,7 +171,7 @@
             // Câu lệnh SQL gửi đến Google Sheet để lọc đúng mã SV ở Cột B (tương ứng cột B trong Sheet)
             // Giả định cột B trong Google Sheet chứa Mã Sinh Viên
             const sqlQuery = encodeURIComponent(`SELECT * WHERE B = '${query}'`);
-            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}&tq=${sqlQuery}`;
+            const url = `https://docs.google.com/spreadsheets/d/${1kBKA41Ijj-9VpGbVG_sUWsO1kSGeW7sD1ruY397K3BU}/gviz/tq?tqx=out:json&sheet=${GDTC}&tq=${sqlQuery}`;
 
             try {
                 const response = await fetch(url);

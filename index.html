@@ -52,31 +52,31 @@
                 <div class="p-4 space-y-3 text-xs sm:text-sm border-b border-gray-200">
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Mã sinh viên:</span>
-                        <span id="resId" class="col-span-2 font-bold font-mono text-gray-900 truncate">--</span>
+                        <span id="masv" class="col-span-2 font-bold font-mono text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Họ và tên:</span>
-                        <span id="resName" class="col-span-2 font-semibold text-gray-900 truncate">--</span>
+                        <span id="hoten" class="col-span-2 font-semibold text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Ngày sinh:</span>
-                        <span id="resDob" class="col-span-2 text-gray-900 truncate">--</span>
+                        <span id="nsinh" class="col-span-2 text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Lớp sinh hoạt:</span>
-                        <span id="resClass" class="col-span-2 text-gray-900 truncate">--</span>
+                        <span id="lopsh" class="col-span-2 text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Khóa:</span>
-                        <span id="resBatch" class="col-span-2 text-gray-900 truncate">--</span>
+                        <span id="khoa" class="col-span-2 text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Trường:</span>
-                        <span id="resSchool" class="col-span-2 text-gray-900 truncate">--</span>
+                        <span id="truong" class="col-span-2 text-gray-900 truncate">--</span>
                     </div>
                     <div class="grid grid-cols-3 border-b border-gray-200 pb-2 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Số/Ngày QĐ:</span>
-                        <span id="resDecision" class="col-span-2 text-gray-900 truncate font-medium">--</span>
+                        <span id="qdinh" class="col-span-2 text-gray-900 truncate font-medium">--</span>
                     </div>
                     <div class="grid grid-cols-3 items-center">
                         <span class="text-gray-500 font-medium whitespace-nowrap">Trạng thái GDTC:</span>
@@ -110,16 +110,16 @@
                             </thead>
                             <tbody>
                                 <tr class="font-medium text-gray-900">
-                                    <td id="g1_num" class="py-2 border-r border-gray-200">--</td>
-                                    <td id="g1_txt" class="py-2 border-r border-gray-200 text-gray-500">--</td>
-                                    <td id="g2_num" class="py-2 border-r border-gray-200">--</td>
-                                    <td id="g2_txt" class="py-2 border-r border-gray-200 text-gray-500">--</td>
-                                    <td id="g3_num" class="py-2 border-r border-gray-200">--</td>
-                                    <td id="g3_txt" class="py-2 border-r border-gray-200 text-gray-500">--</td>
-                                    <td id="g4_num" class="py-2 border-r border-gray-200">--</td>
-                                    <td id="g4_txt" class="py-2 border-r border-gray-200 text-gray-500">--</td>
-                                    <td id="g_avg" class="py-2 border-r border-gray-200 bg-blue-50/50 font-bold text-blue-700">--</td>
-                                    <td id="g_rank" class="py-2 bg-amber-50/50 font-bold text-amber-700">--</td>
+                                    <td id="g1_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g1_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g2_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g2_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g3_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g3_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="g4_so" class="py-2 border-r border-gray-200">--</td>
+                                    <td id="g4_chu" class="py-2 border-r border-gray-200 text-gray-500">--</td>
+                                    <td id="tbinh" class="py-2 border-r border-gray-200 bg-blue-50/50 font-bold text-blue-700">--</td>
+                                    <td id="xeploai" class="py-2 bg-amber-50/50 font-bold text-amber-700">--</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -171,7 +171,7 @@
             // Câu lệnh SQL gửi đến Google Sheet để lọc đúng mã SV ở Cột B (tương ứng cột B trong Sheet)
             // Giả định cột B trong Google Sheet chứa Mã Sinh Viên
             const sqlQuery = encodeURIComponent(`SELECT * WHERE B = '${query}'`);
-            const url = `https://docs.google.com/spreadsheets/d/${1kBKA41Ijj-9VpGbVG_sUWsO1kSGeW7sD1ruY397K3BU}/gviz/tq?tqx=out:json&sheet=${GDTC}&tq=${sqlQuery}`;
+            const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}&tq=${sqlQuery}`;
 
             try {
                 const response = await fetch(url);

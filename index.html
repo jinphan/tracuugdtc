@@ -149,16 +149,16 @@
         const profileForm = document.getElementById("profileForm");
         const notFoundState = document.getElementById("notFoundState");
 
-        const resId = document.getElementById("resId"); const resName = document.getElementById("resName");
-        const resDob = document.getElementById("resDob"); const resClass = document.getElementById("resClass");
-        const resBatch = document.getElementById("resBatch"); const resSchool = document.getElementById("resSchool");
-        const resDecision = document.getElementById("resDecision");
+        const masv = document.getElementById("masv"); const hoten = document.getElementById("hoten");
+        const nsinh = document.getElementById("nsinh"); const lopsh = document.getElementById("lopsh");
+        const khoa = document.getElementById("khoa"); const truong = document.getElementById("truong");
+        const qdinh = document.getElementById("qdinh");
 
-        const g1_num = document.getElementById("g1_num"); const g1_txt = document.getElementById("g1_txt");
-        const g2_num = document.getElementById("g2_num"); const g2_txt = document.getElementById("g2_txt");
-        const g3_num = document.getElementById("g3_num"); const g3_txt = document.getElementById("g3_txt");
-        const g4_num = document.getElementById("g4_num"); const g4_txt = document.getElementById("g4_txt");
-        const g_avg = document.getElementById("g_avg");   const g_rank = document.getElementById("g_rank");
+        const g1_so = document.getElementById("g1_so"); const g1_chu = document.getElementById("g1_chu");
+        const g2_so = document.getElementById("g2_so"); const g2_chu = document.getElementById("g2_chu");
+        const g3_so = document.getElementById("g3_so"); const g3_chu = document.getElementById("g3_chu");
+        const g4_so = document.getElementById("g4_so"); const g4_chu = document.getElementById("g4_chu");
+        const tbinh = document.getElementById("tbinh");   const xeploai = document.getElementById("xeploai");
 
         async function executeSearch() {
             const query = studentIdInput.value.trim().toUpperCase();
@@ -190,25 +190,25 @@
                     
                     const ho = cols[2] ? cols[2].v : ""; // Cột C: Họ đệm
                     const ten = cols[3] ? cols[3].v : ""; // Cột D: Tên
-                    resName.textContent = (ho + " " + ten).trim() || "--";
+                    hoten.textContent = (ho + " " + ten).trim() || "--";
 
-                    resDob.textContent = cols[4] ? cols[4].v : "--";      // Cột E: Ngày sinh
-                    resClass.textContent = cols[5] ? cols[5].v : "--";    // Cột F: Lớp SH
-                    resBatch.textContent = cols[6] ? Math.floor(cols[6].v) : "--";  // Cột G: Khóa
+                    nsinh.textContent = cols[4] ? cols[4].v : "--";      // Cột E: Ngày sinh
+                    lopsh.textContent = cols[5] ? cols[5].v : "--";    // Cột F: Lớp SH
+                    khoa.textContent = cols[6] ? Math.floor(cols[6].v) : "--";  // Cột G: Khóa
                     
-                    g1_num.textContent = cols[7] ? cols[7].v : "--";      // Cột H: GDTC1 số
-                    g1_txt.textContent = cols[8] ? cols[8].v : "--";      // Cột I: GDTC1 chữ
-                    g2_num.textContent = cols[9] ? cols[9].v : "--";      // Cột J
-                    g2_txt.textContent = cols[10] ? cols[10].v : "--";    // Cột K
-                    g3_num.textContent = cols[11] ? cols[11].v : "--";    // Cột L
-                    g3_txt.textContent = cols[12] ? cols[12].v : "--";    // Cột M
-                    g4_num.textContent = cols[13] ? cols[13].v : "--";    // Cột N
-                    g4_txt.textContent = cols[14] ? cols[14].v : "--";    // Cột O
+                    g1_so.textContent = cols[7] ? cols[7].v : "--";      // Cột H: GDTC1 số
+                    g1_chu.textContent = cols[8] ? cols[8].v : "--";      // Cột I: GDTC1 chữ
+                    g2_so.textContent = cols[9] ? cols[9].v : "--";      // Cột J
+                    g2_chu.textContent = cols[10] ? cols[10].v : "--";    // Cột K
+                    g3_so.textContent = cols[11] ? cols[11].v : "--";    // Cột L
+                    g3_chu.textContent = cols[12] ? cols[12].v : "--";    // Cột M
+                    g4_so.textContent = cols[13] ? cols[13].v : "--";    // Cột N
+                    g4_chu.textContent = cols[14] ? cols[14].v : "--";    // Cột O
                     
-                    g_avg.textContent = cols[15] ? cols[15].v : "--";     // Cột P: TB chung
-                    g_rank.textContent = cols[16] ? cols[16].v : "--";    // Cột Q: Xếp loại
-                    resDecision.textContent = cols[17] ? cols[17].v : "--"; // Cột R: Số/Ngày QĐ
-                    resSchool.textContent = cols[18] ? cols[18].v : "--";   // Cột S: Trường
+                    tbinh.textContent = cols[15] ? cols[15].v : "--";     // Cột P: TB chung
+                    xeploai.textContent = cols[16] ? cols[16].v : "--";    // Cột Q: Xếp loại
+                    qdinh.textContent = cols[17] ? cols[17].v : "--"; // Cột R: Số/Ngày QĐ
+                    truong.textContent = cols[18] ? cols[18].v : "--";   // Cột S: Trường
 
                     switchState('profile');
                 } else {

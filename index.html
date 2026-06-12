@@ -78,10 +78,6 @@
                         <span class="text-gray-500 font-medium whitespace-nowrap">Số/Ngày QĐ:</span>
                         <span id="qdinh" class="col-span-2 text-gray-900 truncate font-medium">--</span>
                     </div>
-                    <div class="grid grid-cols-3 items-center">
-                        <span class="text-gray-500 font-medium whitespace-nowrap">Trạng thái GDTC:</span>
-                        <span id="resStatusText" class="col-span-2 font-bold text-green-600 truncate">Đã hoàn thành chương trình</span>
-                    </div>
                 </div>
 
                 <div class="p-4 bg-white">
@@ -190,34 +186,36 @@
 
         async function executeSearch() {
             const query = studentIdInput.value.trim().toUpperCase();
-            studentIdInput.value = ""; 
+            studentIdInput.value = ""; // Xóa sạch ô nhập liệu
 
             if (query === "") { switchState('default'); return; }
 
             switchState('loading');
 
             // Câu lệnh SQL lọc song song định dạng Text và Number của mã SV tại Cột B
+			// Giả định cột B trong Google Sheet chứa Mã Sinh Viên
             const sqlQuery = encodeURIComponent(`SELECT * WHERE B = '${query}' OR B = ${isNaN(query) ? -1 : query}`);
             const url = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:json&sheet=${SHEET_NAME}&tq=${sqlQuery}`;
 
             try {
                 const response = await fetch(url);
                 const text = await response.text();
-                
+                // Chuẩn hóa dữ liệu trả về từ cấu hình bảo mật của Google
                 const jsonString = text.substring(text.indexOf("{"), text.lastIndexOf("}") + 1);
                 const data = JSON.parse(jsonString);
 
                 if (data.table.rows.length > 0) {
+				// Lấy dòng đầu tiên tìm được
                     const cols = data.table.rows[0].c;
+                    // Bản đồ map dữ liệu theo thứ tự các cột A(0), B(1), C(2),...
+                    masv.textContent = getVal(cols[1]); // Cột B: Mã SV
                     
-                    masv.textContent = getVal(cols[1]); 
-                    
-                    const ho = cols[2] ? (cols[2].v || "") : ""; 
-                    const ten = cols[3] ? (cols[3].v || "") : ""; 
+                    const ho = cols[2] ? (cols[2].v || "") : ""; // Cột C: Họ đệm
+                    const ten = cols[3] ? (cols[3].v || "") : ""; // Cột D: Tên
                     hoten.textContent = (ho + " " + ten).trim() || "--";
 
                     // Áp dụng định dạng hiển thị dd/mm/yyyy mới cho ô Ngày sinh (Cột E - index 4)
-                    nsinh.textContent = formatDate(cols[4]);
+                    nsinh.textContent = formatDate(cols[4]); // Cột E: Ngày sinh
 
                     lopsh.textContent = getVal(cols[5]);
                     khoa.textContent = getVal(cols[6]);

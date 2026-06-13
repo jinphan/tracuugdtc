@@ -7,33 +7,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-gray-100 text-gray-800 font-sans min-h-screen py-10 px-4">
+<body class="bg-gray-100 text-gray-800 font-sans min-h-screen py-5 px-4">
 
     <div class="max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-md border border-gray-200">
-        
-        <h1 class="text-[4vw] sm:text-lg md:text-xl font-black text-center text-blue-900 uppercase tracking-wide mb-8 border-b-2 border-blue-600 pb-4 block whitespace-nowrap overflow-hidden">
+         
+        <h1 class="text-base sm:text-lg md:text-xl font-black text-center text-blue-900 uppercase tracking-wide mb-8 border-b-2 border-blue-600 pb-4 block overflow-hidden text-ellipsis whitespace-nowrap">
             TRANG TRA CỨU SINH VIÊN HOÀN THÀNH GDTC
         </h1>
 
-        <div class="space-y-2 mb-8">
-            <label for="studentIdInput" class="block font-bold text-gray-700 text-sm sm:text-base">
-                Nhập mã sinh viên:
-            </label>
-            <div class="flex gap-2">
-                <input 
-                    type="text" 
-                    id="studentIdInput" 
-                    placeholder="..." 
-                    class="flex-grow px-3 py-2 border border-gray-300 rounded-xl focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none uppercase font-mono tracking-wider text-gray-900 text-sm sm:text-base"
-                >
-                <button 
-                    id="searchBtn" 
-                    class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm transition-colors cursor-pointer flex items-center gap-2 shrink-0 text-sm sm:text-base"
-                >
-                    <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
-                </button>
-            </div>
-        </div>
+<div class="flex flex-col space-y-2 items-center mb-8 ">
+    <div class="flex items-center gap-3">
+        <label for="studentIdInput" class="font-bold text-gray-700 text-sm sm:text-base shrink-0">
+            Nhập mã sinh viên:
+        </label>
+
+        <input 
+            type="text" 
+            id="studentIdInput" 
+            placeholder="..." 
+            class="w-68 px-3 py-2 border border-gray-300 rounded-xl focus:border-blue-600 focus:ring-1 focus:ring-blue-600 outline-none uppercase font-mono tracking-wider text-gray-900 text-sm sm:text-base"
+        >
+        
+        <button 
+            id="searchBtn" 
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-xl shadow-sm transition-colors cursor-pointer flex items-center gap-2 shrink-0 text-sm sm:text-base"
+        >
+            <i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm
+        </button>
+   </div>
+</div>
 
         <div id="resultArea">
             <div id="defaultState" class="text-center py-6 text-gray-400 text-xs sm:text-sm italic">
